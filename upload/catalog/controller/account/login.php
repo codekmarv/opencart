@@ -206,9 +206,60 @@ class ControllerAccountLogin extends Controller {
 		
     	if ($customer_info && !$customer_info['approved']) {
       		$this->error['warning'] = $this->language->get('error_approved');
-    	}		
+    	}else{
+    		if ($this->error){
+    			if (!isset($this->session->data['user_session_counter'])){
+    				$this->session->data['user_session_counter'] = 1;
+    			}else{
+    				$this->session->data['user_session_counter'] = 1 + (int) $this->session->data['user_session_counter'];
+    				if ($this->session->data['user_session_counter'] >= 5){
+      					
+      					$this->error['warning'] = $this->language->get('error_exceed');
+    					
+    					$this->session->data['user_session_counter'] = 0;
+    					unset($this->session->data['user_session_counter']);
+
+    					$this->language->load('mail/forgotten');
+			
+						$password = substr(md5(mt_rand()), 0, 10);
+						
+						$this->model_account_customer->editPassword($this->request->post['email'], $password);
+						
+						$subject = sprintf($this->language->get('text_subject'), $this->config->get('config_name'));
+						
+						$message  = sprintf($this->language->get('text_greeting'), $this->config->get('config_name')) . "\n\n";
+						$message .= $this->language->get('text_password') . "\n\n";
+						$message .= $password;
+
+						$mail = new Mail();
+						$mail->protocol = $this->config->get('config_mail_protocol');
+						$mail->parameter = $this->config->get('config_mail_parameter');
+						$mail->hostname = $this->config->get('config_smtp_host');
+						$mail->username = $this->config->get('config_smtp_username');
+						$mail->password = $this->config->get('config_smtp_password');
+						$mail->port = $this->config->get('config_smtp_port');
+						$mail->timeout = $this->config->get('config_smtp_timeout');				
+						$mail->setTo($this->request->post['email']);
+						$mail->setFrom($this->config->get('config_email'));
+						$mail->setSender($this->config->get('config_name'));
+						$mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
+						$mail->setText(html_entity_decode($message, ENT_QUOTES, 'UTF-8'));
+						$mail->send();
+
+
+    				}
+
+    			}
+    			
+
+    		}
+    	}
 		
     	if (!$this->error) {
+    		if (isset($this->session->data['user_session_counter'])){
+    			$this->session->data['user_session_counter'] = 0;
+    			unset( $this->session->data['user_session_counter'] );
+    		}
       		return true;
     	} else {
       		return false;
