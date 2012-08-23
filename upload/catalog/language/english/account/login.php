@@ -18,6 +18,6 @@ $_['entry_password']               = 'Password:';
 
 // Error
 $_['error_login']                  = 'Warning: No match for E-Mail Address and/or Password.';
-$_['error_exceed']                 = 'Uyarı: Çok fazla şifre denemesi yaptınız. Yeni şifreniz email adresinize gönderildi.';
+$_['error_exceed']                 = 'Warning: You tried incorrect password five times. A new password sent your email.';
 $_['error_approved']               = 'Warning: Your account requires approval before you can login.'; 
 ?>
