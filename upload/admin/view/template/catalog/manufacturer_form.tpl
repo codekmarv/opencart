@@ -66,6 +66,13 @@
               <td><?php echo $entry_sort_order; ?></td>
               <td><input type="text" name="sort_order" value="<?php echo $sort_order; ?>" size="1" /></td>
             </tr>
+            <tr>
+              <td><?php echo $entry_status; ?></td>
+              <td><select name="status">
+                <option value="0" <?php echo ( ($status == '0') ? ('selected'): ('') ) ?>><?php echo $text_offline; ?></option>
+                <option value="1" <?php echo ( ($status == '1') ? ('selected'): ('') ) ?>><?php echo $text_online; ?></option>
+              </select></td>
+            </tr>
           </table>
         </div>
       </form>

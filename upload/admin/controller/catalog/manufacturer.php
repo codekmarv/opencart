@@ -272,12 +272,15 @@ class ControllerCatalogManufacturer extends Controller {
 		$this->data['text_clear'] = $this->language->get('text_clear');			
 		$this->data['text_percent'] = $this->language->get('text_percent');
 		$this->data['text_amount'] = $this->language->get('text_amount');
+		$this->data['text_online'] = $this->language->get('text_online');
+		$this->data['text_offline'] = $this->language->get('text_offline');
 				
 		$this->data['entry_name'] = $this->language->get('entry_name');
 		$this->data['entry_store'] = $this->language->get('entry_store');
 		$this->data['entry_keyword'] = $this->language->get('entry_keyword');
     	$this->data['entry_image'] = $this->language->get('entry_image');
 		$this->data['entry_sort_order'] = $this->language->get('entry_sort_order');
+		$this->data['entry_status'] = $this->language->get('entry_status');
 		$this->data['entry_customer_group'] = $this->language->get('entry_customer_group');
 		  
     	$this->data['button_save'] = $this->language->get('button_save');
@@ -393,6 +396,14 @@ class ControllerCatalogManufacturer extends Controller {
 			$this->data['sort_order'] = $manufacturer_info['sort_order'];
 		} else {
       		$this->data['sort_order'] = '';
+    	}
+
+    	if (isset($this->request->post['status'])) {
+      		$this->data['status'] = $this->request->post['status'];
+    	} elseif (!empty($manufacturer_info)) {
+			$this->data['status'] = $manufacturer_info['status'];
+		} else {
+      		$this->data['status'] = '';
     	}
 		
 		$this->template = 'catalog/manufacturer_form.tpl';

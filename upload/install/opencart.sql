@@ -1481,6 +1481,7 @@ CREATE TABLE `oc_manufacturer` (
   `name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
   `image` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `sort_order` int(3) NOT NULL,
+  `status` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '0',
   PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

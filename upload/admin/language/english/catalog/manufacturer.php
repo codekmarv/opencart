@@ -10,6 +10,8 @@ $_['text_browse']        = 'Browse Files';
 $_['text_clear']         = 'Clear Image';
 $_['text_percent']       = 'Percentage';
 $_['text_amount']        = 'Fixed Amount';
+$_['text_online']        = 'Online';
+$_['text_offline']        = 'Offline';
 
 // Column
 $_['column_name']        = 'Manufacturer Name';
@@ -23,6 +25,7 @@ $_['entry_keyword']      = 'SEO Keyword:<br /><span class="help">Do not use spac
 $_['entry_image']        = 'Image:';
 $_['entry_sort_order']   = 'Sort Order:';
 $_['entry_type']         = 'Type:';
+$_['entry_status']         = 'Status:';
 
 // Error
 $_['error_permission']   = 'Warning: You do not have permission to modify manufacturers!';
