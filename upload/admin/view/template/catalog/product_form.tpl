@@ -364,7 +364,7 @@
           <div id="vtab-option" class="vtabs">
             <?php $option_row = 0; ?>
             <?php foreach ($product_options as $product_option) { ?>
-            <a href="#tab-option-<?php echo $option_row; ?>" id="option-<?php echo $option_row; ?>"><?php echo $product_option['name']; ?>&nbsp;<img src="view/image/delete.png" alt="" onclick="$('#vtabs a:first').trigger('click'); $('#option-<?php echo $option_row; ?>').remove(); $('#tab-option-<?php echo $option_row; ?>').remove(); return false;" /></a>
+            <a href="#tab-option-<?php echo $option_row; ?>" id="option-<?php echo $option_row; ?>"><?php echo $product_option['name']; ?>&nbsp;<img src="view/image/delete.png" alt="" onclick="$('#option-<?php echo $option_row; ?>').remove(); $('#tab-option-<?php echo $option_row; ?>').remove(); $('#vtabs a:first').trigger('click'); return false;" /></a>
             <?php $option_row++; ?>
             <?php } ?>
             <span id="option-add">
@@ -748,7 +748,7 @@ $.widget('custom.catcomplete', $.ui.autocomplete, {
 
 // Category
 $('input[name=\'category\']').autocomplete({
-	delay: 0,
+	delay: 500,
 	source: function(request, response) {
 		$.ajax({
 			url: 'index.php?route=catalog/category/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
@@ -787,7 +787,7 @@ $('#product-category div img').live('click', function() {
 
 // Filter
 $('input[name=\'filter\']').catcomplete({
-	delay: 0,
+	delay: 500,
 	source: function(request, response) {
 		$.ajax({
 			url: 'index.php?route=catalog/filter/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
@@ -827,7 +827,7 @@ $('#product-filter div img').live('click', function() {
 
 // Related
 $('input[name=\'related\']').autocomplete({
-	delay: 0,
+	delay: 500,
 	source: function(request, response) {
 		$.ajax({
 			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
@@ -890,7 +890,7 @@ function addAttribute() {
 
 function attributeautocomplete(attribute_row) {
 	$('input[name=\'product_attribute[' + attribute_row + '][name]\']').catcomplete({
-		delay: 0,
+		delay: 500,
 		source: function(request, response) {
 			$.ajax({
 				url: 'index.php?route=catalog/attribute/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
@@ -926,7 +926,7 @@ $('#attribute tbody').each(function(index, element) {
 var option_row = <?php echo $option_row; ?>;
 
 $('input[name=\'option\']').catcomplete({
-	delay: 0,
+	delay: 500,
 	source: function(request, response) {
 		$.ajax({
 			url: 'index.php?route=catalog/option/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request.term),
@@ -1035,7 +1035,7 @@ $('input[name=\'option\']').catcomplete({
 		
 		$('#tab-option').append(html);
 		
-		$('#option-add').before('<a href="#tab-option-' + option_row + '" id="option-' + option_row + '">' + ui.item.label + '&nbsp;<img src="view/image/delete.png" alt="" onclick="$(\'#vtab-option a:first\').trigger(\'click\'); $(\'#option-' + option_row + '\').remove(); $(\'#tab-option-' + option_row + '\').remove(); return false;" /></a>');
+		$('#option-add').before('<a href="#tab-option-' + option_row + '" id="option-' + option_row + '">' + ui.item.label + '&nbsp;<img src="view/image/delete.png" alt="" onclick="$(\'#option-' + option_row + '\').remove(); $(\'#tab-option-' + option_row + '\').remove(); $(\'#vtab-option a:first\').trigger(\'click\'); return false;" /></a>');
 		
 		$('#vtab-option a').tabs();
 		
