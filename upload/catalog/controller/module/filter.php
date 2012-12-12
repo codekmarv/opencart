@@ -18,12 +18,30 @@ class ControllerModuleFilter extends Controller {
 		
 			$this->data['heading_title'] = $this->language->get('heading_title');
 			
-			if (isset($this->session->data['filter'][$category_id])) {
-				$this->data['filter_category'] = $this->session->data['filter'][$category_id];
+			$this->data['button_filter'] = $this->language->get('button_filter');
+			
+			$url = '';
+			
+			if (isset($this->request->get['sort'])) {
+				$url .= '&sort=' . $this->request->get['sort'];
+			}	
+
+			if (isset($this->request->get['order'])) {
+				$url .= '&order=' . $this->request->get['order'];
+			}	
+			
+			if (isset($this->request->get['limit'])) {
+				$url .= '&limit=' . $this->request->get['limit'];
+			}
+									
+			$this->data['action'] = str_replace('&amp;', '&', $this->url->link('product/category', 'path=' . $this->request->get['path'] . $url));
+			
+			if (isset($this->request->get['filter'])) {
+				$this->data['filter_category'] = explode(',', $this->request->get['filter']);
 			} else {
 				$this->data['filter_category'] = array();
 			}
-			
+						
 			$this->load->model('catalog/filter');
 
 			$this->load->model('catalog/product');
@@ -40,8 +58,7 @@ class ControllerModuleFilter extends Controller {
 				foreach ($filters as $filter) {
 					$data = array(
 						'filter_category_id' => $category_id,
-						'filter_sub_filter'  => true,
-						'filter_filter'      => array($filter['filter_id'])
+						'filter_filter'      => $filter['filter_id']
 					);
 										
 					$filter_data[] = array(
@@ -52,24 +69,23 @@ class ControllerModuleFilter extends Controller {
 				
 				if ($filter_data) {
 					$this->data['filter_groups'][] = array(
-						'name'   => $filter_group['name'],
-						'filter' => $filter_data
+						'filter_group_id' => $filter_group['filter_group_id'],
+						'name'            => $filter_group['name'],
+						'filter'          => $filter_data
 					);
 				}
 			}
 			
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/filter.tpl')) {
-				$this->template = $this->config->get('config_template') . '/template/module/filter.tpl';
-			} else {
-				$this->template = 'default/template/module/filter.tpl';
+			if ($this->data['filter_groups']) {
+				if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/filter.tpl')) {
+					$this->template = $this->config->get('config_template') . '/template/module/filter.tpl';
+				} else {
+					$this->template = 'default/template/module/filter.tpl';
+				}
+				
+				$this->render();
 			}
-			
-			$this->render();
 		}
   	}
-	
-	public function filter() {
-		$this->session->data['filter_category'][] = $this->request->post['filter'];	
-	}
 }
 ?>
