@@ -196,6 +196,7 @@ class ControllerCatalogManufacturer extends Controller {
 
 		$this->data['column_name'] = $this->language->get('column_name');
 		$this->data['column_sort_order'] = $this->language->get('column_sort_order');
+		$this->data['column_status'] = $this->language->get('column_status');
 		$this->data['column_action'] = $this->language->get('column_action');		
 		
 		$this->data['button_insert'] = $this->language->get('button_insert');
@@ -229,6 +230,7 @@ class ControllerCatalogManufacturer extends Controller {
 		
 		$this->data['sort_name'] = $this->url->link('catalog/manufacturer', 'token=' . $this->session->data['token'] . '&sort=name' . $url, 'SSL');
 		$this->data['sort_sort_order'] = $this->url->link('catalog/manufacturer', 'token=' . $this->session->data['token'] . '&sort=sort_order' . $url, 'SSL');
+		$this->data['sort_status'] = $this->url->link('catalog/manufacturer', 'token=' . $this->session->data['token'] . '&sort=status' . $url, 'SSL');
 		
 		$url = '';
 

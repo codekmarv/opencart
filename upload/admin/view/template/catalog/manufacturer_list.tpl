@@ -32,6 +32,11 @@
                 <?php } else { ?>
                 <a href="<?php echo $sort_sort_order; ?>"><?php echo $column_sort_order; ?></a>
                 <?php } ?></td>
+              <td class="right"><?php if ($sort == 'status') { ?>
+                <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
+                <?php } else { ?>
+                <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
+                <?php } ?></td>
               <td class="right"><?php echo $column_action; ?></td>
             </tr>
           </thead>
@@ -46,6 +51,7 @@
                 <?php } ?></td>
               <td class="left"><?php echo $manufacturer['name']; ?></td>
               <td class="right"><?php echo $manufacturer['sort_order']; ?></td>
+              <td class="right"><?php echo ( ($manufacturer['status'] == '0') ? ($text_online): ($text_offline) ) ?></td>
               <td class="right"><?php foreach ($manufacturer['action'] as $action) { ?>
                 [ <a href="<?php echo $action['href']; ?>"><?php echo $action['text']; ?></a> ]
                 <?php } ?></td>
