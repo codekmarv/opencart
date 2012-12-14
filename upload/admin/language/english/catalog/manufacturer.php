@@ -16,6 +16,7 @@ $_['text_offline']        = 'Offline';
 // Column
 $_['column_name']        = 'Manufacturer Name';
 $_['column_sort_order']  = 'Sort Order';
+$_['column_status']  	 = 'Status';
 $_['column_action']      = 'Action';
 
 // Entry

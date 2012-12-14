@@ -12,7 +12,8 @@ class ModelCatalogManufacturer extends Model {
 			
 			$sort_data = array(
 				'name',
-				'sort_order'
+				'sort_order',
+				'status'
 			);	
 			
 			if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
