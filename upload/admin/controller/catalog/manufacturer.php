@@ -185,6 +185,7 @@ class ControllerCatalogManufacturer extends Controller {
 				'manufacturer_id' => $result['manufacturer_id'],
 				'name'            => $result['name'],
 				'sort_order'      => $result['sort_order'],
+				'status'		  => $result['status'],
 				'selected'        => isset($this->request->post['selected']) && in_array($result['manufacturer_id'], $this->request->post['selected']),
 				'action'          => $action
 			);
@@ -197,7 +198,10 @@ class ControllerCatalogManufacturer extends Controller {
 		$this->data['column_name'] = $this->language->get('column_name');
 		$this->data['column_sort_order'] = $this->language->get('column_sort_order');
 		$this->data['column_status'] = $this->language->get('column_status');
-		$this->data['column_action'] = $this->language->get('column_action');		
+		$this->data['column_action'] = $this->language->get('column_action');	
+
+		$this->data['text_online'] = $this->language->get('text_online');
+		$this->data['text_offline'] = $this->language->get('text_offline');	
 		
 		$this->data['button_insert'] = $this->language->get('button_insert');
 		$this->data['button_delete'] = $this->language->get('button_delete');
