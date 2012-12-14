@@ -29,8 +29,6 @@ class ModelUpgrade extends Model {
 				$field_query = $db->query("SHOW COLUMNS FROM `" . $table['Tables_in_' . DB_DATABASE] . "`");
 				
 				foreach ($field_query->rows as $field) {
-					
-					
 					$field_data[$field['Field']] = array(
 						'type' => $field['Field'],
 						'size' => $field['Field']
@@ -41,6 +39,72 @@ class ModelUpgrade extends Model {
 			}
 		}
 		
+		
+		// Get all the tables, fields, type and size
+		$table_data = array();
+		
+		$table_query = $db->query("SHOW TABLES FROM `" . DB_DATABASE . "`");
+		
+		foreach ($table_query->rows as $table) {
+			if (utf8_substr($table['Tables_in_' . DB_DATABASE], 0, strlen(DB_PREFIX)) == DB_PREFIX) {
+				$field_data = array(); 
+				
+				$field_query = $db->query("SHOW COLUMNS FROM `" . $table['Tables_in_' . DB_DATABASE] . "`");
+				
+				foreach ($field_query->rows as $field) {
+					$start = strpos($field['Type'], '(') + 1;
+					$end = strrpos($field['Type'], ')');
+					
+					if ($start && $end) {  
+						$type = substr($field['Type'], 0, strpos($field['Type'], '('));
+						$size = substr($field['Type'], $start, $end - $start);
+					} else {
+						$type = $field['Type'];
+						$size = '';
+					}	
+							
+					$field_data[$field['Field']] = array(
+						'type' => $type,
+						'size' => $size
+					);
+				}
+				
+				$table_data[$table['Tables_in_' . DB_DATABASE]] = $field_data;
+			}
+		}
+		
+		print_r($table_data);
+
+
+		$tables = array(); 
+		
+		$tables[] = array(
+			'name'  => 'affiliate',
+			'field' => array(
+				array(
+					'name'    => 'affiliate_id',
+					'type'    => 'int',
+					'size'    => 11,
+					'default' => '',
+					'charset' => 'utf8_bin'
+				),
+				array(
+					'name'    => 'firstname',
+					'type'    => 'int',
+					'size'    => 11,
+					'default' => '',
+					'charset' => 'utf8_bin'
+				)
+			),
+			'primary' => array(
+				'affiliate_id'
+			)
+		);
+		
+		foreach ($tables as $table) {
+			
+		}
+
 		// Address
 		if (!isset($table_data[DB_PREFIX . 'address']['company_id'])) {
 			$db->query("ALTER TABLE " . DB_PREFIX . "address ADD company_id varchar(32) NOT NULL DEFAULT '' COMMENT '' COLLATE utf8_bin AFTER company");
@@ -117,6 +181,64 @@ class ModelUpgrade extends Model {
 			  PRIMARY KEY (`affiliate_transaction_id`)
 			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin");	
 		
+		
+		
+DROP TABLE IF EXISTS `oc_attribute`;
+CREATE TABLE `oc_attribute` (
+  `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
+  `attribute_group_id` int(11) NOT NULL,
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`attribute_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+		
+DROP TABLE IF EXISTS `oc_attribute_description`;
+CREATE TABLE `oc_attribute_description` (
+  `attribute_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `name` varchar(64) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`attribute_id`,`language_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+		
+		
+		
+DROP TABLE IF EXISTS `oc_attribute_group`;
+CREATE TABLE `oc_attribute_group` (
+  `attribute_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`attribute_group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+		
+		
+		
+DROP TABLE IF EXISTS `oc_attribute_group_description`;
+CREATE TABLE `oc_attribute_group_description` (
+  `attribute_group_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `name` varchar(64) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`attribute_group_id`,`language_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;		
+		
+		
+		
+		
+DROP TABLE IF EXISTS `oc_banner_image`;
+CREATE TABLE `oc_banner_image` (
+  `banner_image_id` int(11) NOT NULL AUTO_INCREMENT,
+  `banner_id` int(11) NOT NULL,
+  `link` varchar(255) COLLATE utf8_bin NOT NULL,
+  `image` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`banner_image_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+
+
 		
 		
 		
