@@ -254,14 +254,9 @@ DROP TABLE IF EXISTS `oc_banner_image`;
 CREATE TABLE `oc_banner_image` (
   `banner_image_id` int(11) NOT NULL AUTO_INCREMENT,
   `banner_id` int(11) NOT NULL,
-<<<<<<< HEAD
-  `link` varchar(255) COLLATE utf8_bin NOT NULL,
-  `image` varchar(255) COLLATE utf8_bin NOT NULL,
-  `sort_order` int(11) NOT NULL,
-=======
   `link` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
->>>>>>> f7a0864fca1342b3fab8d1746ea3f2f0271727cf
+  `sort_order` int(11) NOT NULL,
   PRIMARY KEY (`banner_image_id`)
 ) DEFAULT CHARSET=utf8;
 
