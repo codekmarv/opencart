@@ -752,46 +752,53 @@
           </table>
         </div>
         <div id="tab-mail">
+			<table class="form">
+				<tr>
+	              <td><?php echo $entry_mail_protocol; ?></td>
+	              <td><select name="config_mail_protocol">
+					<?php if ($config_mail_protocols){ ?>
+					<?php $i  = 0; foreach( $config_mail_protocols as $mail_protocol ){ ?>
+						<?php if ($config_mail_protocol == $mail_protocol['config_mail_protocol']) { ?>
+		                  <option value="<?php echo $mail_protocol['config_mail_protocol']; ?>" selected="selected"><?php echo $mail_protocol['config_mail_protocol']; ?></option>
+		                  <?php } else { ?>
+		                  <option value="<?php echo $mail_protocol['config_mail_protocol']; ?>"><?php echo $mail_protocol['config_mail_protocol']; ?></option>
+		                  <?php } ?>
+					<?php }} ?>
+	                </select></td>
+	            </tr>
+			</table>
+			<table class="form">
+				<thead>
+				<tr>
+					<th><?php echo $entry_mail_protocol; ?></th>
+					<th><?php echo $entry_mail_parameter; ?></th>
+					<th><?php echo $entry_smtp_host; ?></th>
+					<th><?php echo $entry_smtp_username; ?></th>
+					<th><?php echo $entry_smtp_password; ?></th>
+					<th><?php echo $entry_smtp_port; ?></th>
+					<th><?php echo $entry_smtp_timeout; ?></th>
+				</tr>
+				</thead>
+				<tbody class="mail_server_form">
+				<?php if ($config_mail_protocols){ ?>
+				<?php $i  = 0; foreach( $config_mail_protocols as $mail_protocol ){ ?>
+				<tr>
+					<td><input type="text" name="config_mail_protocols[<?php echo $i ?>][config_mail_protocol]" value="<?php echo $mail_protocol['config_mail_protocol']; ?>" /></td>
+					<td><input type="text" name="config_mail_protocols[<?php echo $i ?>][config_mail_parameter]" value="<?php echo $mail_protocol['config_mail_parameter']; ?>" /></td>
+					<td><input type="text" name="config_mail_protocols[<?php echo $i ?>][config_smtp_host]" value="<?php echo $mail_protocol['config_smtp_host']; ?>" /></td>
+					<td><input type="text" name="config_mail_protocols[<?php echo $i ?>][config_smtp_username]" value="<?php echo $mail_protocol['config_smtp_username']; ?>" /></td>
+					<td><input type="text" name="config_mail_protocols[<?php echo $i ?>][config_smtp_password]" value="<?php echo $mail_protocol['config_smtp_password']; ?>" /></td>
+					<td><input type="text" name="config_mail_protocols[<?php echo $i ?>][config_smtp_port]" value="<?php echo $mail_protocol['config_smtp_port']; ?>" /></td>
+					<td><input type="text" name="config_mail_protocols[<?php echo $i ?>][config_smtp_timeout]" value="<?php echo $mail_protocol['config_smtp_timeout']; ?>" /></td>
+					<td><a href="#" onclick="$(this).parent().remove();return false;" class="button"><?php echo $button_delete; ?></a></td>
+				</tr>
+				<?php $i++; }} ?>
+				</tbody>
+				<tr>
+					<td colspan="8" class=""><a href="#" onclick="addMailServer();return false;" class="button"><?php echo $button_insert; ?></a></td>
+				</tr>
+			</table>
           <table class="form">
-            <tr>
-              <td><?php echo $entry_mail_protocol; ?></td>
-              <td><select name="config_mail_protocol">
-                  <?php if ($config_mail_protocol == 'mail') { ?>
-                  <option value="mail" selected="selected"><?php echo $text_mail; ?></option>
-                  <?php } else { ?>
-                  <option value="mail"><?php echo $text_mail; ?></option>
-                  <?php } ?>
-                  <?php if ($config_mail_protocol == 'smtp') { ?>
-                  <option value="smtp" selected="selected"><?php echo $text_smtp; ?></option>
-                  <?php } else { ?>
-                  <option value="smtp"><?php echo $text_smtp; ?></option>
-                  <?php } ?>
-                </select></td>
-            </tr>
-            <tr>
-              <td><?php echo $entry_mail_parameter; ?></td>
-              <td><input type="text" name="config_mail_parameter" value="<?php echo $config_mail_parameter; ?>" /></td>
-            </tr>
-            <tr>
-              <td><?php echo $entry_smtp_host; ?></td>
-              <td><input type="text" name="config_smtp_host" value="<?php echo $config_smtp_host; ?>" /></td>
-            </tr>
-            <tr>
-              <td><?php echo $entry_smtp_username; ?></td>
-              <td><input type="text" name="config_smtp_username" value="<?php echo $config_smtp_username; ?>" /></td>
-            </tr>
-            <tr>
-              <td><?php echo $entry_smtp_password; ?></td>
-              <td><input type="text" name="config_smtp_password" value="<?php echo $config_smtp_password; ?>" /></td>
-            </tr>
-            <tr>
-              <td><?php echo $entry_smtp_port; ?></td>
-              <td><input type="text" name="config_smtp_port" value="<?php echo $config_smtp_port; ?>" /></td>
-            </tr>
-            <tr>
-              <td><?php echo $entry_smtp_timeout; ?></td>
-              <td><input type="text" name="config_smtp_timeout" value="<?php echo $config_smtp_timeout; ?>" /></td>
-            </tr>
             <tr>
               <td><?php echo $entry_alert_mail; ?></td>
               <td><?php if ($config_alert_mail) { ?>
@@ -1052,6 +1059,24 @@ $('select[name=\'config_country_id\']').bind('change', function() {
 $('select[name=\'config_country_id\']').trigger('change');
 //--></script> 
 <script type="text/javascript"><!--
+
+var mail_server_count = '<?php echo (( $config_mail_protocols )?(count($config_mail_protocols) - 1):('0')); ?>';
+function addMailServer(){
+	mail_server_count++;
+	$('.mail_server_form').append( '<tr>'+
+			'<td><input type="text" name="config_mail_protocols['+mail_server_count+'][config_mail_protocol]" value="" /></td>'+
+			'<td><input type="text" name="config_mail_protocols['+mail_server_count+'][config_mail_parameter]" value="" /></td>'+
+			'<td><input type="text" name="config_mail_protocols['+mail_server_count+'][config_smtp_host]" value="" /></td>'+
+			'<td><input type="text" name="config_mail_protocols['+mail_server_count+'][config_smtp_username]" value="" /></td>'+
+			'<td><input type="text" name="config_mail_protocols['+mail_server_count+'][config_smtp_password]" value="" /></td>'+
+			'<td><input type="text" name="config_mail_protocols['+mail_server_count+'][config_smtp_port]" value="" /></td>'+
+			'<td><input type="text" name="config_mail_protocols['+mail_server_count+'][config_smtp_timeout]" value="" /></td>'+
+			'<td><a href="#" onclick="$(this).parent().remove();return false;" class="button"><?php echo $button_delete; ?></a></td>'+
+		'</tr>' );
+		
+	return false;
+	
+}
 function image_upload(field, thumb) {
 	$('#dialog').remove();
 	

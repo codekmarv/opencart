@@ -142,6 +142,8 @@ class ControllerSettingSetting extends Controller {
 		$this->data['entry_google_analytics'] = $this->language->get('entry_google_analytics');
 		
 		$this->data['button_save'] = $this->language->get('button_save');
+		$this->data['button_insert'] = $this->language->get('button_insert');
+		$this->data['button_delete'] = $this->language->get('button_delete');
 		$this->data['button_cancel'] = $this->language->get('button_cancel');
 
 		$this->data['tab_general'] = $this->language->get('tab_general');
@@ -879,6 +881,13 @@ class ControllerSettingSetting extends Controller {
 		} else {
 			$this->data['config_mail_protocol'] = $this->config->get('config_mail_protocol');
 		}
+		////
+		if (isset($this->request->post['config_mail_protocols'])) {
+			$this->data['config_mail_protocols'] = $this->request->post['config_mail_protocols'];
+		} else {
+			$this->data['config_mail_protocols'] = $this->config->get('config_mail_protocols');
+		}
+		////
 		
 		if (isset($this->request->post['config_mail_parameter'])) {
 			$this->data['config_mail_parameter'] = $this->request->post['config_mail_parameter'];
