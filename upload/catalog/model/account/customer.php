@@ -112,7 +112,7 @@ class ModelAccountCustomer extends Model {
 		}
 		
 		if (isset($data['filter_email']) && !is_null($data['filter_email'])) {
-			$implode[] = "LOWER(c.email) = '" . $this->db->escape(utf8_strtolower($data['filter_email'])) . "'";
+			$implode[] = "LCASE(c.email) = '" . $this->db->escape(utf8_strtolower($data['filter_email'])) . "'";
 		}
 		
 		if (isset($data['filter_customer_group_id']) && !is_null($data['filter_customer_group_id'])) {
@@ -189,8 +189,8 @@ class ModelAccountCustomer extends Model {
 		return $query->rows;
 	}	
 	
-	public function isBlacklisted($ip) {
-		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "customer_ip_blacklist` WHERE ip = '" . $this->db->escape($ip) . "'");
+	public function isBanIp($ip) {
+		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "customer_ban_ip` WHERE ip = '" . $this->db->escape($ip) . "'");
 		
 		return $query->num_rows;
 	}	
