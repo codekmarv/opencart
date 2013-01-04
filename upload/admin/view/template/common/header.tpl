@@ -98,7 +98,6 @@ $(document).ready(function(){
             <ul>
               <li><a href="<?php echo $customer; ?>"><?php echo $text_customer; ?></a></li>
               <li><a href="<?php echo $customer_group; ?>"><?php echo $text_customer_group; ?></a></li>
-              <li><a href="<?php echo $custom_field; ?>"><?php echo $text_custom_field; ?></a></li>
               <li><a href="<?php echo $customer_ban_ip; ?>"><?php echo $text_customer_ban_ip; ?></a></li>
             </ul>
           </li>
@@ -227,25 +226,28 @@ $(document).ready(function() {
 	$('#menu > ul').css('display', 'block');
 });
  
-function getURLVar(urlVarName) {
-	var urlHalves = String(document.location).toLowerCase().split('?');
-	var urlVarValue = '';
+function getURLVar(key) {
+	var value = [];
 	
-	if (urlHalves[1]) {
-		var urlVars = urlHalves[1].split('&');
+	var query = String(document.location).split('?');
+	
+	if (query[1]) {
+		var part = query[1].split('&');
 
-		for (var i = 0; i <= (urlVars.length); i++) {
-			if (urlVars[i]) {
-				var urlVarPair = urlVars[i].split('=');
-				
-				if (urlVarPair[0] && urlVarPair[0] == urlVarName.toLowerCase()) {
-					urlVarValue = urlVarPair[1];
-				}
+		for (i = 0; i < part.length; i++) {
+			var data = part[i].split('=');
+			
+			if (data[0] && data[1]) {
+				value[data[0]] = data[1];
 			}
 		}
+		
+		if (value[key]) {
+			return value[key];
+		} else {
+			return '';
+		}
 	}
-	
-	return urlVarValue;
 } 
 
 $(document).ready(function() {
