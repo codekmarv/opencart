@@ -3,7 +3,7 @@ class ControllerSaleCustomField extends Controller {
 	private $error = array();  
  
 	public function index() {
-		$this->load->language('sale/custom_field');
+		$this->language->load('sale/custom_field');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -13,7 +13,7 @@ class ControllerSaleCustomField extends Controller {
 	}
 
 	public function insert() {
-		$this->load->language('sale/custom_field');
+		$this->language->load('sale/custom_field');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -45,7 +45,7 @@ class ControllerSaleCustomField extends Controller {
 	}
 
 	public function update() {
-		$this->load->language('sale/custom_field');
+		$this->language->load('sale/custom_field');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -77,7 +77,7 @@ class ControllerSaleCustomField extends Controller {
 	}
 
 	public function delete() {
-		$this->load->language('sale/custom_field');
+		$this->language->load('sale/custom_field');
 
 		$this->document->setTitle($this->language->get('heading_title'));
  		
@@ -180,12 +180,64 @@ class ControllerSaleCustomField extends Controller {
 				'text' => $this->language->get('text_edit'),
 				'href' => $this->url->link('sale/custom_field/update', 'token=' . $this->session->data['token'] . '&custom_field_id=' . $result['custom_field_id'] . $url, 'SSL')
 			);
-
+			
+			$type = '';
+			
+			switch ($result['type']) {
+				case 'select':
+					$type = $this->language->get('text_select');
+					break;
+				case 'radio':
+					$type = $this->language->get('text_radio');
+					break;
+				case 'checkbox':
+					$type = $this->language->get('text_checkbox');
+					break;
+				case 'input':
+					$type = $this->language->get('text_input');
+					break;
+				case 'text':
+					$type = $this->language->get('text_text');
+					break;
+				case 'textarea':
+					$type = $this->language->get('text_textarea');
+					break;
+				case 'file':
+					$type = $this->language->get('text_file');
+					break;
+				case 'date':
+					$type = $this->language->get('text_date');
+					break;																														
+				case 'datetime':
+					$type = $this->language->get('text_datetime');
+					break;	
+				case 'time':
+					$type = $this->language->get('text_time');
+					break;																	
+			}
+			
+			$location = '';
+			
+			switch ($result['location']) {
+				case 'customer':
+					$location = $this->language->get('text_customer');
+					break;
+				case 'address':
+					$location = $this->language->get('text_address');
+					break;
+				case 'payment_address':
+					$location = $this->language->get('text_payment_address');
+					break;
+				case 'shipping_address':
+					$location = $this->language->get('text_shipping_address');
+					break;										
+			}			
+		
 			$this->data['custom_fields'][] = array(
 				'custom_field_id' => $result['custom_field_id'],
 				'name'            => $result['name'],
-				'type'            => $result['type'],
-				'location'        => $result['location'],
+				'type'            => $type,
+				'location'        => $location,
 				'sort_order'      => $result['sort_order'],
 				'selected'        => isset($this->request->post['selected']) && in_array($result['custom_field_id'], $this->request->post['selected']),
 				'action'          => $action
@@ -274,7 +326,6 @@ class ControllerSaleCustomField extends Controller {
 		$this->data['text_select'] = $this->language->get('text_select');
 		$this->data['text_radio'] = $this->language->get('text_radio');
 		$this->data['text_checkbox'] = $this->language->get('text_checkbox');
-		$this->data['text_image'] = $this->language->get('text_image');
 		$this->data['text_input'] = $this->language->get('text_input');
 		$this->data['text_text'] = $this->language->get('text_text');
 		$this->data['text_textarea'] = $this->language->get('text_textarea');
@@ -282,15 +333,20 @@ class ControllerSaleCustomField extends Controller {
 		$this->data['text_date'] = $this->language->get('text_date');
 		$this->data['text_datetime'] = $this->language->get('text_datetime');
 		$this->data['text_time'] = $this->language->get('text_time');
-		$this->data['text_image_manager'] = $this->language->get('text_image_manager');
-		$this->data['text_browse'] = $this->language->get('text_browse');
-		$this->data['text_clear'] = $this->language->get('text_clear');	
+		$this->data['text_customer'] = $this->language->get('text_customer');
+		$this->data['text_address'] = $this->language->get('text_address');
+		$this->data['text_payment_address'] = $this->language->get('text_payment_address');
+		$this->data['text_shipping_address'] = $this->language->get('text_shipping_address');
+		$this->data['text_yes'] = $this->language->get('text_yes');
+		$this->data['text_no'] = $this->language->get('text_no');
 		
 		$this->data['entry_name'] = $this->language->get('entry_name');
 		$this->data['entry_type'] = $this->language->get('entry_type');
-		$this->data['entry_type'] = $this->language->get('entry_type');
 		$this->data['entry_value'] = $this->language->get('entry_value');
-		$this->data['entry_image'] = $this->language->get('entry_image');
+		$this->data['entry_custom_value'] = $this->language->get('entry_custom_value');
+		$this->data['entry_required'] = $this->language->get('entry_required');
+		$this->data['entry_location'] = $this->language->get('entry_location');
+		$this->data['entry_position'] = $this->language->get('entry_position');
 		$this->data['entry_sort_order'] = $this->language->get('entry_sort_order');
 
 		$this->data['button_save'] = $this->language->get('button_save');
@@ -369,7 +425,7 @@ class ControllerSaleCustomField extends Controller {
 		} else {
 			$this->data['custom_field_description'] = array();
 		}	
-
+		
 		if (isset($this->request->post['type'])) {
 			$this->data['type'] = $this->request->post['type'];
 		} elseif (!empty($custom_field_info)) {
@@ -378,6 +434,38 @@ class ControllerSaleCustomField extends Controller {
 			$this->data['type'] = '';
 		}
 		
+		if (isset($this->request->post['value'])) {
+			$this->data['value'] = $this->request->post['value'];
+		} elseif (!empty($custom_field_info)) {
+			$this->data['value'] = $custom_field_info['value'];
+		} else {
+			$this->data['value'] = '';
+		}
+		
+		if (isset($this->request->post['required'])) {
+			$this->data['required'] = $this->request->post['required'];
+		} elseif (!empty($custom_field_info)) {
+			$this->data['required'] = $custom_field_info['required'];
+		} else {
+			$this->data['required'] = '';
+		}
+						
+		if (isset($this->request->post['location'])) {
+			$this->data['location'] = $this->request->post['location'];
+		} elseif (!empty($custom_field_info)) {
+			$this->data['location'] = $custom_field_info['location'];
+		} else {
+			$this->data['location'] = '';
+		}
+		
+		if (isset($this->request->post['position'])) {
+			$this->data['position'] = $this->request->post['position'];
+		} elseif (!empty($custom_field_info)) {
+			$this->data['position'] = $custom_field_info['position'];
+		} else {
+			$this->data['position'] = '';
+		}	
+			
 		if (isset($this->request->post['sort_order'])) {
 			$this->data['sort_order'] = $this->request->post['sort_order'];
 		} elseif (!empty($custom_field_info)) {
@@ -394,27 +482,15 @@ class ControllerSaleCustomField extends Controller {
 			$custom_field_values = array();
 		}
 		
-		$this->load->model('tool/image');
-		
 		$this->data['custom_field_values'] = array();
 		 
 		foreach ($custom_field_values as $custom_field_value) {
-			if ($custom_field_value['image'] && file_exists(DIR_IMAGE . $custom_field_value['image'])) {
-				$image = $custom_field_value['image'];
-			} else {
-				$image = 'no_image.jpg';
-			}
-			
 			$this->data['custom_field_values'][] = array(
 				'custom_field_value_id'          => $custom_field_value['custom_field_value_id'],
 				'custom_field_value_description' => $custom_field_value['custom_field_value_description'],
-				'image'                          => $image,
-				'thumb'                          => $this->model_tool_image->resize($image, 100, 100),
 				'sort_order'                     => $custom_field_value['sort_order']
 			);
 		}
-
-		$this->data['no_image'] = $this->model_tool_image->resize('no_image.jpg', 100, 100);
 
 		$this->template = 'sale/custom_field_form.tpl';
 		$this->children = array(

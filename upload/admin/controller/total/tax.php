@@ -3,13 +3,13 @@ class ControllerTotalTax extends Controller {
 	private $error = array();
 	 
 	public function index() { 
-		$this->load->language('total/tax');
+		$this->language->load('total/tax');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 		
 		$this->load->model('setting/setting');
 		
-		if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			$this->model_setting_setting->editSetting('tax', $this->request->post);
 		
 			$this->session->data['success'] = $this->language->get('text_success');

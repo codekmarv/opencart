@@ -3,7 +3,7 @@ class ControllerCatalogDownload extends Controller {
 	private $error = array();
    
   	public function index() {
-		$this->load->language('catalog/download');
+		$this->language->load('catalog/download');
 
     	$this->document->setTitle($this->language->get('heading_title'));
 	
@@ -13,7 +13,7 @@ class ControllerCatalogDownload extends Controller {
   	}
   	        
   	public function insert() {
-		$this->load->language('catalog/download');
+		$this->language->load('catalog/download');
     
     	$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -45,7 +45,7 @@ class ControllerCatalogDownload extends Controller {
   	}
 
   	public function update() {
-		$this->load->language('catalog/download');
+		$this->language->load('catalog/download');
 
     	$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -77,7 +77,7 @@ class ControllerCatalogDownload extends Controller {
   	}
 
   	public function delete() {
-		$this->load->language('catalog/download');
+		$this->language->load('catalog/download');
  
     	$this->document->setTitle($this->language->get('heading_title'));
 		
@@ -488,7 +488,7 @@ class ControllerCatalogDownload extends Controller {
 					$allowed[] = trim($filetype);
 				}
 								
-				if (!in_array($this->request->files['file']['type'], $filetypes)) {
+				if (!in_array($this->request->files['file']['type'], $allowed)) {
 					$json['error'] = $this->language->get('error_filetype');
 				}
 							

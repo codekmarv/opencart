@@ -24,7 +24,7 @@ textarea {
 	padding: 2px;
 }
 a, a:visited {
-	color: #003366;
+	color: #016FA7;
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -321,6 +321,9 @@ a.button, .list a.button {
 	vertical-align: middle;
 	padding: 0px 5px;
 	background: #FFFFFF;
+}
+.list tbody tr:hover td {
+	background-color: #FFFFCB;
 }
 .list .left {
 	text-align: left;

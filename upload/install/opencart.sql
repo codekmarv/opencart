@@ -102,7 +102,7 @@ CREATE TABLE `oc_affiliate_transaction` (
   `affiliate_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `description` text NOT NULL,
-  `amount` decimal(15,4) NOT NULL,
+  `amount` decimal(15,8) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`affiliate_transaction_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -873,10 +873,10 @@ CREATE TABLE `oc_coupon` (
   `name` varchar(128) NOT NULL,
   `code` varchar(10) NOT NULL,
   `type` char(1) NOT NULL,
-  `discount` decimal(15,4) NOT NULL,
+  `discount` decimal(15,8) NOT NULL,
   `logged` tinyint(1) NOT NULL,
   `shipping` tinyint(1) NOT NULL,
-  `total` decimal(15,4) NOT NULL,
+  `total` decimal(15,8) NOT NULL,
   `date_start` date NOT NULL DEFAULT '0000-00-00',
   `date_end` date NOT NULL DEFAULT '0000-00-00',
   `uses_total` int(11) NOT NULL,
@@ -924,7 +924,7 @@ CREATE TABLE `oc_coupon_history` (
   `coupon_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `amount` decimal(15,4) NOT NULL,
+  `amount` decimal(15,8) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`coupon_history_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -1184,7 +1184,7 @@ CREATE TABLE `oc_customer_transaction` (
   `customer_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `description` text NOT NULL,
-  `amount` decimal(15,4) NOT NULL,
+  `amount` decimal(15,8) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`customer_transaction_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -1202,11 +1202,12 @@ CREATE TABLE `oc_customer_transaction` (
 DROP TABLE IF EXISTS `oc_custom_field`;
 CREATE TABLE `oc_custom_field` (
   `custom_field_id` int(11) NOT NULL AUTO_INCREMENT,
-  `location` varchar(32) NOT NULL,
   `type` varchar(32) NOT NULL,
   `value` text NOT NULL,
   `required` tinyint(1) NOT NULL,
+  `location` varchar(32) NOT NULL,
   `position` int(3) NOT NULL,
+  `sort_order` int(3) NOT NULL,
   PRIMARY KEY (`custom_field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -1940,10 +1941,10 @@ CREATE TABLE `oc_order` (
   `shipping_method` varchar(128) NOT NULL,
   `shipping_code` varchar(128) NOT NULL,  
   `comment` text NOT NULL,
-  `total` decimal(15,4) NOT NULL DEFAULT '0.0000',
+  `total` decimal(15,8) NOT NULL DEFAULT '0.0000',
   `order_status_id` int(11) NOT NULL DEFAULT '0',
   `affiliate_id` int(11) NOT NULL,
-  `commission` decimal(15,4) NOT NULL,
+  `commission` decimal(15,8) NOT NULL,
   `language_id` int(11) NOT NULL,
   `currency_id` int(11) NOT NULL,
   `currency_code` varchar(3) NOT NULL,
@@ -2124,9 +2125,9 @@ CREATE TABLE `oc_order_product` (
   `name` varchar(255) NOT NULL,
   `model` varchar(64) NOT NULL,
   `quantity` int(4) NOT NULL,
-  `price` decimal(15,4) NOT NULL DEFAULT '0.0000',
-  `total` decimal(15,4) NOT NULL DEFAULT '0.0000',
-  `tax` decimal(15,4) NOT NULL DEFAULT '0.0000',
+  `price` decimal(15,8) NOT NULL DEFAULT '0.0000',
+  `total` decimal(15,8) NOT NULL DEFAULT '0.0000',
+  `tax` decimal(15,8) NOT NULL DEFAULT '0.0000',
   `reward` int(8) NOT NULL,
   PRIMARY KEY (`order_product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -2182,7 +2183,7 @@ CREATE TABLE `oc_order_total` (
   `code` varchar(32) NOT NULL,
   `title` varchar(255) NOT NULL,
   `text` varchar(255) NOT NULL,
-  `value` decimal(15,4) NOT NULL DEFAULT '0.0000',
+  `value` decimal(15,8) NOT NULL DEFAULT '0.0000',
   `sort_order` int(3) NOT NULL,
   PRIMARY KEY (`order_total_id`),
   KEY `idx_orders_total_orders_id` (`order_id`)
@@ -2214,7 +2215,7 @@ CREATE TABLE `oc_order_voucher` (
   `to_email` varchar(96) NOT NULL,
   `voucher_theme_id` int(11) NOT NULL,
   `message` text NOT NULL,
-  `amount` decimal(15,4) NOT NULL,
+  `amount` decimal(15,8) NOT NULL,
   PRIMARY KEY (`order_voucher_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -2244,7 +2245,7 @@ CREATE TABLE `oc_product` (
   `image` varchar(255) DEFAULT NULL,
   `manufacturer_id` int(11) NOT NULL,
   `shipping` tinyint(1) NOT NULL DEFAULT '1',
-  `price` decimal(15,4) NOT NULL DEFAULT '0.0000',
+  `price` decimal(15,8) NOT NULL DEFAULT '0.0000',
   `points` int(8) NOT NULL DEFAULT '0',
   `tax_class_id` int(11) NOT NULL,
   `date_available` date NOT NULL,
@@ -2372,7 +2373,7 @@ CREATE TABLE `oc_product_discount` (
   `customer_group_id` int(11) NOT NULL,
   `quantity` int(4) NOT NULL DEFAULT '0',
   `priority` int(5) NOT NULL DEFAULT '1',
-  `price` decimal(15,4) NOT NULL DEFAULT '0.0000',
+  `price` decimal(15,8) NOT NULL DEFAULT '0.0000',
   `date_start` date NOT NULL DEFAULT '0000-00-00',
   `date_end` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`product_discount_id`),
@@ -2536,7 +2537,7 @@ CREATE TABLE `oc_product_option_value` (
   `option_value_id` int(11) NOT NULL,
   `quantity` int(3) NOT NULL,
   `subtract` tinyint(1) NOT NULL,
-  `price` decimal(15,4) NOT NULL,
+  `price` decimal(15,8) NOT NULL,
   `price_prefix` varchar(1) NOT NULL,
   `points` int(8) NOT NULL,
   `points_prefix` varchar(1) NOT NULL,
@@ -2642,7 +2643,7 @@ CREATE TABLE `oc_product_special` (
   `product_id` int(11) NOT NULL,
   `customer_group_id` int(11) NOT NULL,
   `priority` int(5) NOT NULL DEFAULT '1',
-  `price` decimal(15,4) NOT NULL DEFAULT '0.0000',
+  `price` decimal(15,8) NOT NULL DEFAULT '0.0000',
   `date_start` date NOT NULL DEFAULT '0000-00-00',
   `date_end` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`product_special_id`),
@@ -2994,9 +2995,9 @@ INSERT INTO `oc_setting` (`setting_id`, `store_id`, `group`, `key`, `value`, `se
 (35, 0, 'flat', 'flat_status', '1', 0),
 (36, 0, 'flat', 'flat_geo_zone_id', '0', 0),
 (37, 0, 'flat', 'flat_tax_class_id', '9', 0),
-(38, 0, 'carousel', 'carousel_module', 'a:1:{i:0;a:9:{s:9:"banner_id";s:1:"8";s:5:"limit";s:1:"5";s:6:"scroll";s:1:"3";s:5:"width";s:2:"80";s:6:"height";s:2:"80";s:9:"layout_id";s:1:"1";s:8:"position";s:14:"content_bottom";s:6:"status";s:1:"1";s:10:"sort_order";s:2:"-1";}}', 1),
+(38, 0, 'carousel', 'carousel_module', 'a:1:{i:0;a:10:{s:9:"banner_id";s:1:"8";s:5:"limit";s:1:"5";s:6:"scroll";s:1:"3";s:5:"width";s:2:"80";s:6:"height";s:2:"80";s:11:"resize_type";s:7:"default";s:9:"layout_id";s:1:"1";s:8:"position";s:14:"content_bottom";s:6:"status";s:1:"1";s:10:"sort_order";s:2:"-1";}}', 1),
 (39, 0, 'featured', 'featured_product', '43,40,42,49,46,47,28', 0),
-(40, 0, 'featured', 'featured_module', 'a:1:{i:0;a:7:{s:5:"limit";s:1:"6";s:11:"image_width";s:2:"80";s:12:"image_height";s:2:"80";s:9:"layout_id";s:1:"1";s:8:"position";s:11:"content_top";s:6:"status";s:1:"1";s:10:"sort_order";s:1:"2";}}', 1),
+(40, 0, 'featured', 'featured_module', 'a:1:{i:0;a:8:{s:5:"limit";s:1:"6";s:11:"image_width";s:2:"80";s:12:"image_height";s:2:"80";s:11:"resize_type";s:7:"default";s:9:"layout_id";s:1:"1";s:8:"position";s:11:"content_top";s:6:"status";s:1:"1";s:10:"sort_order";s:1:"2";}}', 1),
 (41, 0, 'flat', 'flat_cost', '5.00', 0),
 (42, 0, 'credit', 'credit_sort_order', '7', 0),
 (43, 0, 'credit', 'credit_status', '1', 0),
@@ -3064,8 +3065,8 @@ INSERT INTO `oc_setting` (`setting_id`, `store_id`, `group`, `key`, `value`, `se
 (105, 0, 'config', 'config_weight_class_id', '1', 0),
 (106, 0, 'config', 'config_currency_auto', '1', 0),
 (107, 0, 'config', 'config_currency', 'USD', 0),
-(108, 0, 'slideshow', 'slideshow_module', 'a:1:{i:0;a:7:{s:9:"banner_id";s:1:"7";s:5:"width";s:3:"980";s:6:"height";s:3:"280";s:9:"layout_id";s:1:"1";s:8:"position";s:11:"content_top";s:6:"status";s:1:"1";s:10:"sort_order";s:1:"1";}}', 1),
-(109, 0, 'banner', 'banner_module', 'a:1:{i:0;a:7:{s:9:"banner_id";s:1:"6";s:5:"width";s:3:"182";s:6:"height";s:3:"182";s:9:"layout_id";s:1:"3";s:8:"position";s:11:"column_left";s:6:"status";s:1:"1";s:10:"sort_order";s:1:"3";}}', 1),
+(108, 0, 'slideshow', 'slideshow_module', 'a:1:{i:0;a:8:{s:9:"banner_id";s:1:"7";s:5:"width";s:3:"980";s:6:"height";s:3:"280";s:11:"resize_type";s:7:"default";s:9:"layout_id";s:1:"1";s:8:"position";s:11:"content_top";s:6:"status";s:1:"1";s:10:"sort_order";s:1:"1";}}', 1),
+(109, 0, 'banner', 'banner_module', 'a:1:{i:0;a:8:{s:9:"banner_id";s:1:"6";s:5:"width";s:3:"182";s:6:"height";s:3:"182";s:11:"resize_type";s:7:"default";s:9:"layout_id";s:1:"3";s:8:"position";s:11:"column_left";s:6:"status";s:1:"1";s:10:"sort_order";s:1:"3";}}', 1),
 (110, 0, 'config', 'config_name', 'Your Store', 0),
 (111, 0, 'config', 'config_owner', 'Your Name', 0),
 (112, 0, 'config', 'config_address', 'Address 1', 0),
@@ -3167,7 +3168,7 @@ CREATE TABLE `oc_tax_rate` (
   `tax_rate_id` int(11) NOT NULL AUTO_INCREMENT,
   `geo_zone_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(32) NOT NULL,
-  `rate` decimal(15,4) NOT NULL DEFAULT '0.0000',
+  `rate` decimal(15,8) NOT NULL DEFAULT '0.0000',
   `type` char(1) NOT NULL,
   `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -3324,7 +3325,7 @@ CREATE TABLE `oc_voucher` (
   `to_email` varchar(96) NOT NULL,
   `voucher_theme_id` int(11) NOT NULL,
   `message` text NOT NULL,
-  `amount` decimal(15,4) NOT NULL,
+  `amount` decimal(15,8) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`voucher_id`)
@@ -3346,7 +3347,7 @@ CREATE TABLE `oc_voucher_history` (
   `voucher_history_id` int(11) NOT NULL AUTO_INCREMENT,
   `voucher_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
-  `amount` decimal(15,4) NOT NULL,
+  `amount` decimal(15,8) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`voucher_history_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
