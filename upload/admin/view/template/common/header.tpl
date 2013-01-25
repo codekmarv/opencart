@@ -22,6 +22,7 @@
 <link type="text/css" href="view/javascript/jquery/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="view/javascript/jquery/tabs.js"></script>
 <script type="text/javascript" src="view/javascript/jquery/superfish/js/superfish.js"></script>
+<script type="text/javascript" src="view/javascript/common.js"></script>
 <?php foreach ($scripts as $script) { ?>
 <script type="text/javascript" src="<?php echo $script; ?>"></script>
 <?php } ?>
@@ -98,6 +99,7 @@ $(document).ready(function(){
             <ul>
               <li><a href="<?php echo $customer; ?>"><?php echo $text_customer; ?></a></li>
               <li><a href="<?php echo $customer_group; ?>"><?php echo $text_customer_group; ?></a></li>
+              <li><a href="<?php echo $custom_field; ?>"><?php echo $text_custom_field; ?></a></li>              
               <li><a href="<?php echo $customer_ban_ip; ?>"><?php echo $text_customer_ban_ip; ?></a></li>
             </ul>
           </li>
@@ -207,67 +209,6 @@ $(document).ready(function(){
       </li>
       <li><a class="top" href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>
     </ul>
-    <script type="text/javascript"><!--
-$(document).ready(function() {
-	$('#menu > ul').superfish({
-		pathClass	 : 'overideThisToUse',
-		delay		 : 0,
-		animation	 : {height: 'show'},
-		speed		 : 'normal',
-		autoArrows   : false,
-		dropShadows  : false, 
-		disableHI	 : false, /* set to true to disable hoverIntent detection */
-		onInit		 : function(){},
-		onBeforeShow : function(){},
-		onShow		 : function(){},
-		onHide		 : function(){}
-	});
-	
-	$('#menu > ul').css('display', 'block');
-});
- 
-function getURLVar(key) {
-	var value = [];
-	
-	var query = String(document.location).split('?');
-	
-	if (query[1]) {
-		var part = query[1].split('&');
-
-		for (i = 0; i < part.length; i++) {
-			var data = part[i].split('=');
-			
-			if (data[0] && data[1]) {
-				value[data[0]] = data[1];
-			}
-		}
-		
-		if (value[key]) {
-			return value[key];
-		} else {
-			return '';
-		}
-	}
-} 
-
-$(document).ready(function() {
-	route = getURLVar('route');
-	
-	if (!route) {
-		$('#dashboard').addClass('selected');
-	} else {
-		part = route.split('/');
-		
-		url = part[0];
-		
-		if (part[1]) {
-			url += '/' + part[1];
-		}
-		
-		$('a[href*=\'' + url + '\']').parents('li[id]').addClass('selected');
-	}
-});
-//--></script> 
   </div>
   <?php } ?>
 </div>

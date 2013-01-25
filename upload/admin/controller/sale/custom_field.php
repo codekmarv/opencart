@@ -337,13 +337,27 @@ class ControllerSaleCustomField extends Controller {
 		$this->data['text_address'] = $this->language->get('text_address');
 		$this->data['text_payment_address'] = $this->language->get('text_payment_address');
 		$this->data['text_shipping_address'] = $this->language->get('text_shipping_address');
-		$this->data['text_yes'] = $this->language->get('text_yes');
-		$this->data['text_no'] = $this->language->get('text_no');
+		
+		$this->data['text_begining'] = $this->language->get('text_begining');
+		$this->data['text_firstname'] = $this->language->get('text_firstname');
+		$this->data['text_lastname'] = $this->language->get('text_lastname');
+		$this->data['text_email'] = $this->language->get('text_email');
+		$this->data['text_telephone'] = $this->language->get('text_telephone');
+		$this->data['text_fax'] = $this->language->get('text_fax');
+		$this->data['text_company'] = $this->language->get('text_company');
+		$this->data['text_customer_group'] = $this->language->get('text_customer_group');
+		$this->data['text_address_1'] = $this->language->get('text_address_1');
+		$this->data['text_address_2'] = $this->language->get('text_address_2');
+		$this->data['text_city'] = $this->language->get('text_city');
+		$this->data['text_postcode'] = $this->language->get('text_postcode');
+		$this->data['text_country'] = $this->language->get('text_country');
+		$this->data['text_zone'] = $this->language->get('text_zone');	
 		
 		$this->data['entry_name'] = $this->language->get('entry_name');
 		$this->data['entry_type'] = $this->language->get('entry_type');
 		$this->data['entry_value'] = $this->language->get('entry_value');
 		$this->data['entry_custom_value'] = $this->language->get('entry_custom_value');
+		$this->data['entry_customer_group'] = $this->language->get('entry_customer_group');
 		$this->data['entry_required'] = $this->language->get('entry_required');
 		$this->data['entry_location'] = $this->language->get('entry_location');
 		$this->data['entry_position'] = $this->language->get('entry_position');
@@ -425,7 +439,7 @@ class ControllerSaleCustomField extends Controller {
 		} else {
 			$this->data['custom_field_description'] = array();
 		}	
-		
+						
 		if (isset($this->request->post['type'])) {
 			$this->data['type'] = $this->request->post['type'];
 		} elseif (!empty($custom_field_info)) {
@@ -441,15 +455,35 @@ class ControllerSaleCustomField extends Controller {
 		} else {
 			$this->data['value'] = '';
 		}
-		
-		if (isset($this->request->post['required'])) {
-			$this->data['required'] = $this->request->post['required'];
-		} elseif (!empty($custom_field_info)) {
-			$this->data['required'] = $custom_field_info['required'];
+				
+		if (isset($this->request->post['custom_field_customer_group'])) {
+			$custom_field_customer_groups = $this->request->post['custom_field_customer_group'];
+		} elseif (isset($this->request->get['custom_field_id'])) {
+			$custom_field_customer_groups = $this->model_sale_custom_field->getCustomFieldCustomerGroups($this->request->get['custom_field_id']);
 		} else {
-			$this->data['required'] = '';
+			$custom_field_customer_groups = array();
 		}
-						
+		
+		$this->data['custom_field_customer_group'] = array();
+		
+		foreach ($custom_field_customer_groups as $custom_field_customer_group) {
+			if (isset($custom_field_customer_group['customer_group_id'])) {
+				$this->data['custom_field_customer_group'][] = $custom_field_customer_group['customer_group_id'];
+			}
+		}
+		
+		$this->data['custom_field_required'] = array();
+		
+		foreach ($custom_field_customer_groups as $custom_field_customer_group) {
+			if (isset($custom_field_customer_group['required'])) {
+				$this->data['custom_field_required'][] = $custom_field_customer_group['required'];
+			}
+		}
+		
+		$this->load->model('sale/customer_group');
+		
+		$this->data['customer_groups'] = $this->model_sale_customer_group->getCustomerGroups();	
+								
 		if (isset($this->request->post['location'])) {
 			$this->data['location'] = $this->request->post['location'];
 		} elseif (!empty($custom_field_info)) {
@@ -538,16 +572,6 @@ class ControllerSaleCustomField extends Controller {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 		
-		$this->load->model('sale/product');
-		
-		foreach ($this->request->post['selected'] as $custom_field_id) {
-			$product_total = $this->model_sale_product->getTotalProductsByCustomFieldId($custom_field_id);
-
-			if ($product_total) {
-				$this->error['warning'] = sprintf($this->language->get('error_product'), $product_total);
-			}
-		}
-
 		if (!$this->error) {
 			return true;
 		} else {
